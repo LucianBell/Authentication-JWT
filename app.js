@@ -17,7 +17,7 @@ app.get("/", (req, res) => {
 
 //Register user
 app.post("/auth/register", async (req, res) => {
-  const { username, email, password, confpassword } = req.body;
+  const { name, email, password, confpassword } = req.body;
 
   //Validations
   if (!username) {
