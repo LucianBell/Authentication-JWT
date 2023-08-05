@@ -50,7 +50,24 @@ app.post("/auth/register", async (req, res) => {
       .json({ message: "User already registered. Use another email or login" });
   }
 
-  res.status(200).json({ message: "Registration completed!" });
+  //Create password
+  const salt = await bcrypt.genSalt(12);
+  const passwordHash = await bcrypt.hash(password, salt);
+
+  //Create User
+  const user = new User({
+    name,
+    email,
+    password: passwordHash,
+  });
+
+  try {
+    await user.save();
+
+    res.status(201).json({ message: "User created" });
+  } catch (error) {
+    res.status(500).send({ message: error });
+  }
 });
 
 //Connecting to database
